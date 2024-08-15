@@ -1,4 +1,5 @@
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -40,6 +41,7 @@ export default function Movies() {
 
   return (
     <div>
+      <Link href="/"> Home </Link>
       <h1>Filmes</h1>
       <ul>
         {movies.map((movie) => (

@@ -1,4 +1,5 @@
 import { signIn, signOut, useSession } from "next-auth/react";
+import Link from "next/link";
 
 export default function HomePage() {
   const { data: session } = useSession();
@@ -7,6 +8,7 @@ export default function HomePage() {
     return (
       <div>
         <p>Bem-vindo, {session.user?.name}</p>
+        <Link href="/movies"> Filmes </Link>
         <button onClick={() => signOut()}>Sair</button>
       </div>
     );
