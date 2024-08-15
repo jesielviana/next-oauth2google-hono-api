@@ -1,16 +1,28 @@
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
+interface Movie {
+  id: number;
+  title: string;
+}
+
 export default function Movies() {
-  const { data: session } = useSession();
-  const [movies, setMovies] = useState([]);
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const [movies, setMovies] = useState<Movie[]>([]);
 
   useEffect(() => {
+    console.log("session", session);
+    console.log("status", status);
+    if(status === "unauthenticated"){
+      router.push("/");
+    }
     if (session) {
       // Fazendo uma chamada para a API Express, passando o accessToken no cabeçalho
-      console.log("session.accessToken", session);
       fetch("http://localhost:4000/api/movies", {
           headers: {
+            //@ts-ignore
             Authorization: `Bearer ${session.accessToken}`,
           },
         })
@@ -24,7 +36,7 @@ export default function Movies() {
         })
         .catch((error) => console.error("Erro ao buscar filmes", error));
     }
-  }, [session]);
+  }, [session, status, router]);
 
   return (
     <div>
